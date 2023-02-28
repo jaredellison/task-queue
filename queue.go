@@ -28,6 +28,7 @@ func NewQueue(ts []func() error, interval time.Duration, retries int) *Queue {
 		status:   map[string]bool{},
 		Retries:  retries,
 	}
+
 	for i, t := range ts {
 		tsk := task{
 			Run: t,
@@ -36,6 +37,7 @@ func NewQueue(ts []func() error, interval time.Duration, retries int) *Queue {
 		q.tasks = append(q.tasks, tsk)
 		q.status[tsk.Id] = false
 	}
+
 	return &q
 }
 
@@ -109,7 +111,7 @@ func (q *Queue) Run() {
 					if err == nil || tsk.Try >= q.Retries {
 						// Mark done in map
 						q.MarkDone(tsk.Id)
-						// Check if other tasks are done
+						// Check if this is the last running task
 						if q.CheckDone() {
 							done <- struct{}{}
 						}
