@@ -32,7 +32,7 @@ func NewQueue(ts []func() error, interval time.Duration, retries int) *Queue {
 	for i, t := range ts {
 		tsk := task{
 			Run: t,
-			Id:  fmt.Sprintf("%d", i), // Use UUID here?
+			Id:  fmt.Sprintf("%d", i),
 		}
 		q.tasks = append(q.tasks, tsk)
 		q.status[tsk.Id] = false
